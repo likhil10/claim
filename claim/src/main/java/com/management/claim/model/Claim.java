@@ -1,33 +1,32 @@
 package com.management.claim.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name = "claim_management")
+@Table(name = "insurance_claim_management")
 public class Claim {
 	/** primary key	*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "claim_type",nullable = false)
-    private String claimType;
     
-    @Column(name = "from_date", nullable = false)
-    private String fromDate;
+	@Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "to_date", nullable = false)
-    private String toDate;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "purpose", nullable = false)
-    private String purpose;
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "phone_number")
+    private int phoneNumber;
+
+	@Column(name = "policy_number")
+    private String policyNumber;
 
 	@Column(name = "status")
     private String status;
@@ -35,40 +34,30 @@ public class Claim {
     public Claim() {
 	}
     
-	public Claim(String claimType, String fromDate, String toDate, Double amount, String comment, String purpose, String status) {
-		this.claimType = claimType;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
+	public Claim(String firstName, String lastName, Double amount, String email, int phoneNumber, String policyNumber, String status) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.amount = amount;
-		this.purpose = purpose;
-		this.comment = comment;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.policyNumber = policyNumber;
 		this.status = status;
 	}
-    
-    public String getClaimType() {
-		return claimType;
-	}
-	public String getStatus() { return status; }
-
-	public void setStatus(String status) { this.status = status; }
-	public void setClaimType(String claimType) {
-		this.claimType = claimType;
+	
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public String getFromDate() {
-		return fromDate;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public void setFromDate(String fromDate) {
-		this.fromDate = fromDate;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public String getToDate() {
-		return toDate;
-	}
-
-	public void setToDate(String toDate) {
-		this.toDate = toDate;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public Double getAmount() {
@@ -79,23 +68,41 @@ public class Claim {
 		this.amount = amount;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getPurpose() {
-		return purpose;
+	public int getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setPurpose(String purpose) {
-		this.purpose = purpose;
+	public void setPhoneNumber(int phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPolicyNumber() {
+		return policyNumber;
+	}
+
+	public void setPolicyNumber(String policyNumber) {
+		this.policyNumber = policyNumber;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Long getId() {
 		return id;
 	}
+
+    
 }

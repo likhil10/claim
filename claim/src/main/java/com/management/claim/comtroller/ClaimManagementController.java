@@ -1,6 +1,5 @@
 package com.management.claim.comtroller;
 
-import com.management.claim.repository.ClaimManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +11,7 @@ import com.management.claim.model.Claim;
 import com.management.claim.service.ClaimManagementService;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.ModelAndView;
+//import org.springframework.web.servlet.ModelAndView;
 
 @CrossOrigin
 @RestController
@@ -24,13 +22,13 @@ public class ClaimManagementController {
 
 	Logger logger = Logger.getLogger(ClaimManagementController.class.getName());
 
-	@GetMapping()
-	public ModelAndView getCurrentDateAndTime() {
-		logger.info("inside");
-		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("currentDateAndTime");
-		return mav;
-	}
+//	@GetMapping()
+//	public ModelAndView getCurrentDateAndTime() {
+//		logger.info("inside");
+//		ModelAndView mav = new ModelAndView("index");
+//		mav.addObject("currentDateAndTime");
+//		return mav;
+//	}
 
 	@GetMapping("/claim")
 	public ResponseEntity<List<Claim>> getAll(){

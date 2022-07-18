@@ -1,221 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Customer Application</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-        function GEEKFORGEEKS() {
+	<title>Customer Application</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<style>
+		.errorMessage {
+			width: 250px;
+			color: red;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			margin-left: 107px;
+			visibility: hidden;
+			border-radius: 10px;
+			position: relative;
+			float: left;
+		}
 
-            const url = 'http://localhost:8080/api/v01/customers/register'
-            var username =
-                document.forms.RegForm.username.value;
-            var email =
-                document.forms.RegForm.email.value;
+		.errorMessage.top-arrow:after {
+			content: " ";
+			position: absolute;
+			right: 90px;
+			top: -15px;
+			border-top: none;
+			border-right: 10px solid transparent;
+			border-left: 10px solid transparent;
+			border-bottom: 15px solid white;
+		}
+	</style>
+	<script>
 
-            var phone =
-                document.forms.RegForm.phone.value;
-            var first_name =
-                document.forms.RegForm.first_name.value;
-            var last_name =
-                document.forms.RegForm.last_name.value;
-            var password =
-                document.forms.RegForm.password.value;
-            var address =
-                document.forms.RegForm.address.value;
-            var city =
-                document.forms.RegForm.city.value;
-            var zip =
-                document.forms.RegForm.zip.value;
+		function validateForm() {
+			console.log('inside');
+			var firstName = document.forms.RegForm.firstName.value;
+			var lastName = document.forms.RegForm.lastName.value;
+			var email = document.forms.RegForm.email.value;
+			var phone = document.forms.RegForm.phone.value;
+			var policyNumber = document.forms.RegForm.policyNumber.value;
+			var amount = document.forms.RegForm.amount.value;
+			var regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;  //Javascript reGex for Email Validation.
+			var regPhone = /^\d{10}$/;                                        // Javascript reGex for Phone Number validation.
+			var regName = /\d+$/g;                                    // Javascript reGex for Name validation
+			if (firstName == null || firstName == "" || regName.test(firstName)) {
+				document.getElementById("firstName").style.visibility = "visible";
+				document.forms.RegForm.firstName.focus();
+				document.getElementById("firstName").innerHTML = "Please enter valid data in this field";
+			} else if (lastName == null || lastName == "" || regName.test(lastName)) {
+				document.getElementById("lastName").style.visibility = "visible";
+				document.forms.RegForm.lastName.focus();
+				document.getElementById("lastName").innerHTML = "Please enter valid data in this field";
+				document.getElementById("firstName").style.visibility = "hidden";
+			} else if (phone == null || phone == "" || !regPhone.test(phone)) {
+				document.getElementById("phone").style.visibility = "visible";
+				document.forms.RegForm.phone.focus();
+				document.getElementById("phone").innerHTML = "Please enter valid data in this field";
+				document.getElementById("lastName").style.visibility = "hidden";				
+			} else if (email == null || email == "" || !regEmail.test(email)) {
+				document.getElementById("email").style.visibility = "visible";
+				document.forms.RegForm.email.focus();
+				document.getElementById("email").innerHTML = "Please enter valid data in this field";
+				document.getElementById("phone").style.visibility = "hidden";
+			} else if (policyNumber == null || policyNumber == "") {
+				document.getElementById("policyNumber").style.visibility = "visible";
+				document.forms.RegForm.policyNumber.focus();
+				document.getElementById("policyNumber").innerHTML = "Please Fill out this field";
+				document.getElementById("email").style.visibility = "hidden";
+			} else if (amount == null || amount == "") {
+				document.getElementById("amount").style.visibility = "visible";
+				document.forms.RegForm.amount.focus();
+				document.getElementById("amount").innerHTML = "Please Fill out this field";
+				document.getElementById("policyNumber").style.visibility = "hidden";
+			} else {
+				fileClaim();
+			}
+		}
+		function fileClaim() {
 
-            var confirmPassword = document.forms.RegForm.confirmPassword.value;
+			console.log("hello");
+			const url = 'http://localhost:8080/api/claim'
+			var firstName = document.forms.RegForm.firstName.value;
+			var lastName = document.forms.RegForm.lastName.value;
+			var email = document.forms.RegForm.email.value;
+			var phoneNumber = document.forms.RegForm.phone.value;
+			var policyNumber = document.forms.RegForm.policyNumber.value;
+			var amount = document.forms.RegForm.amount.value;
+			var status = "In Progress";
 
-            var state =
-                document.forms.RegForm.state.value;
-            var regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;  //Javascript reGex for Email Validation.
-            var regPhone = /^\d{10}$/;                                        // Javascript reGex for Phone Number validation.
-            var regName = /\d+$/g;                                    // Javascript reGex for Name validation
-
-            if (first_name == "" || regName.test(first_name)) {
-                window.alert("Please enter your first name properly.");
-                first_name.focus();
-                return false;
-            }
-
-            if (last_name == "" || regName.test(last_name)) {
-                window.alert("Please enter your last name properly.");
-                last_name.focus();
-                return false;
-            }
-
-            if (address == "") {
-                window.alert("Please enter your address.");
-                address.focus();
-                return false;
-            }
-
-            if (email == "" || !regEmail.test(email)) {
-                window.alert("Please enter a valid e-mail address.");
-                email.focus();
-                return false;
-            }
-
-            if (password == "") {
-                alert("Please enter your password");
-                password.focus();
-                return false;
-            }
-
-            if (zip == "") {
-                alert("Please enter your zip");
-                zip.focus();
-                return false;
-            }
-
-            if (state == "") {
-                alert("Please enter your state");
-                state.focus();
-                return false;
-            }
-
-            if (city == "") {
-                alert("Please enter your city");
-                city.focus();
-                return false;
-            }
-
-            if (password.length < 6) {
-                alert("Password should be atleast 6 character long");
-                password.focus();
-                return false;
-
-            }
-
-            if (password !== confirmPassword) {
-                alert("You confirm your password incorrectly");
-                password.focus();
-                return false;
-
-            }
-            if (phone == "" || !regPhone.test(phone)) {
-                alert("Please enter valid phone number.");
-                phone.focus();
-                return false;
-            }
-
-            const data = {
-                username: username,
-                password: password,
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                register: 1,
-                address: address,
-                zip: zip,
-                city: city,
-                state: state,
-                phone: phone,
-                dependent: []
-            };
+			const data = {
+				firstName,
+				lastName,
+				email,
+				phoneNumber,
+				policyNumber,
+				amount,
+				status,
+			};
 
 
-            fetch(url, {
-                headers: {
-                    'content-type': 'application/json;charset=utf-8',
+			fetch(url, {
+				headers: {
+					'content-type': 'application/json;charset=utf-8',
 
-                }, method: 'POST', body: JSON.stringify(data)
-            })
-                .then(
-                    alert("Thank you for your registration, please check email for next step."),
-                    response => response.text()
-                )
-                .then(
-                    data => console.log(data)
-                )
-                .catch(err => {
-                    throw err
-                });
-        }
-    </script>
+				}, method: 'POST', body: JSON.stringify(data)
+			})
+				.then(
+					response => response.JSON()
+				)
+				.then(
+					data => console.log(data)
+				)
+				.catch(err => {
+					throw err
+				});
+		}
+	</script>
 </head>
+
 <body>
-<div class="container">
-    <h1 class="well">New Claim</h1>
-    <div class="col-lg-12 well">
-        <div class="row">
-            <form name="RegForm" method="POST">
-                <div class="row">
-                    <div class="col-sm-4 form-group">
-                        <label>Claim type</label>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                Dropdown Example
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">claim type 1</a></li>
-                                <li><a href="#">CSS</a></li>
-                                <li><a href="#">JavaScript</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 form-group">
-                        <label>From: </label><br/>
-                        <input type="date" id="fromDate" name="fromDate">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                        <label>To: </label><br/>
-                        <input type="date" id="toDate" name="toDate">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-4 form-group">
-                        <label>Purpose</label>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                Select Purpose
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">claim type 1</a></li>
-                                <li><a href="#">CSS</a></li>
-                                <li><a href="#">JavaScript</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <label>Amount</label>
-                        <input type="number" name="amount" placeholder="Enter Amount Here.." class="form-control"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Comments</label>
-                    <textarea placeholder="Enter Comments Here.."  name="comments" rows="2" class="form-control"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <input type="file" id="myFile" name="filename">
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-2 form-group">
-                        <button type="button" class="btn btn-lg btn-info" onclick="GEEKFORGEEKS()">Submit</button>
-                    </div>
-                    <div class="col-sm-2 form-group">
-                        <button type="button" style="background-color:orange;border-color:orange"
-                                class="btn btn-lg btn-info">
-                            Reset
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
+	<div class="container d-flex align-items-center justify-content-center" style="height: 100%;">
+		<h1 class="well">New Claim</h1>
+		<div class="col-lg-12 well">
+			<div class="row">
+				<form name="RegForm" method="POST" style="padding-left: 30px;padding-right: 30px;">
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label>First Name</label>
+							<input type="text" name="firstName" placeholder="Enter First Name Here.."
+								class="form-control" required />
+							<p id="firstName" class="errorMessage"> </p>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label>Last Name</label>
+							<input type="text" name="lastName" placeholder="Enter Last Name Here.." class="form-control"
+								required />
+							<p id="lastName" class="errorMessage"> </p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label>Phone Number</label>
+							<input type="number" name="phone" placeholder="Enter Phone Number Here.."
+								class="form-control" required />
+							<p id="phone" class="errorMessage"> </p>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label>Email Address</label>
+							<input type="text" name="email" placeholder="Enter Email Address Here.."
+								class="form-control" required />
+							<p id="email" class="errorMessage"> </p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label>Policy Number</label>
+							<input type="text" name="policyNumber" placeholder="Enter Policy Number Here.."
+								class="form-control" required />
+							<p id="policyNumber" class="errorMessage"> </p>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label>Amount</label>
+							<input type="number" name="amount" placeholder="Enter Amount Here.." class="form-control"
+								required />
+							<p id="amount" class="errorMessage"> </p>
+						</div>
+					</div>
+					<div class="form-group" style=" margin-top: 15px;">
+						<input type="file" id="myFile" name="filename" class="form-control">
+					</div>
+					<div class="row" style=" margin-top: 30px;">
+						<div class="col-sm-6 form-group">
+							<button type="button" class="btn btn-lg btn-info" onclick="validateForm()">Submit</button>
+						</div>
+						<div class="col-sm-6 form-group">
+							<button type="button" style="background-color:orange;border-color:orange"
+								class="btn btn-lg btn-info">Reset</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
 </body>
+
 </html>
