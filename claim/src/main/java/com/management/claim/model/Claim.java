@@ -1,6 +1,7 @@
 package com.management.claim.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "insurance_claim_management")
@@ -104,5 +105,6 @@ public class Claim {
 		return id;
 	}
 
-    
+	@OneToMany(mappedBy = "claim")
+	private List<FileEntity> fileEntityList;
 }
