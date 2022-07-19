@@ -37,7 +37,6 @@
 	<script>
 
 		function validateForm() {
-			console.log('inside');
 			var firstName = document.forms.RegForm.firstName.value;
 			var lastName = document.forms.RegForm.lastName.value;
 			var email = document.forms.RegForm.email.value;
@@ -60,7 +59,7 @@
 				document.getElementById("phone").style.visibility = "visible";
 				document.forms.RegForm.phone.focus();
 				document.getElementById("phone").innerHTML = "Please enter valid data in this field";
-				document.getElementById("lastName").style.visibility = "hidden";				
+				document.getElementById("lastName").style.visibility = "hidden";
 			} else if (email == null || email == "" || !regEmail.test(email)) {
 				document.getElementById("email").style.visibility = "visible";
 				document.forms.RegForm.email.focus();
@@ -82,15 +81,15 @@
 		}
 		function fileClaim() {
 
-			console.log("hello");
 			const url = 'http://localhost:8080/api/claim'
-			var firstName = document.forms.RegForm.firstName.value;
-			var lastName = document.forms.RegForm.lastName.value;
-			var email = document.forms.RegForm.email.value;
-			var phoneNumber = document.forms.RegForm.phone.value;
-			var policyNumber = document.forms.RegForm.policyNumber.value;
-			var amount = document.forms.RegForm.amount.value;
-			var status = "In Progress";
+			let firstName = document.forms.RegForm.firstName.value;
+			let lastName = document.forms.RegForm.lastName.value;
+			let email = document.forms.RegForm.email.value;
+			let phoneNumber = document.forms.RegForm.phone.value;
+			let policyNumber = document.forms.RegForm.policyNumber.value;
+			let amount = document.forms.RegForm.amount.value;
+			let fileElement = document.getElementById('fileInput')
+			let status = fileElement.files.length !== 0 ? "Submitted" : "In Progress";
 
 			const data = {
 				firstName,
@@ -102,7 +101,6 @@
 				status,
 			};
 
-
 			fetch(url, {
 				headers: {
 					'content-type': 'application/json;charset=utf-8',
@@ -110,15 +108,37 @@
 				}, method: 'POST', body: JSON.stringify(data)
 			})
 				.then(
-					response => response.JSON()
-				)
-				.then(
-					data => console.log(data)
-				)
+					response => response.json(),
+				).then(data =>{
+					fileElement.files.length !== 0 && uploadFile(data.id);
+					document.location.href = '\claimsData.html';
+				})
 				.catch(err => {
-					throw err
+					console.log("error", err);
 				});
 		}
+
+		function uploadFile(id) {
+			let fileElement = document.getElementById('fileInput');
+
+			let file = fileElement.files[0];
+
+			let formData = new FormData();
+			formData.append('file', file);
+
+			const url = `http://localhost:8080/api/uploadFile/${id}`;
+
+			fetch(url, {
+				method: 'POST',
+				body: formData
+			}).then(function (response) {
+				console.log(response.data);
+			})
+				.catch(error => {
+					console.log('error', error);
+				});
+		}
+
 	</script>
 </head>
 
@@ -171,7 +191,7 @@
 						</div>
 					</div>
 					<div class="form-group" style=" margin-top: 15px;">
-						<input type="file" id="myFile" name="filename" class="form-control">
+						<input type="file" id="fileInput" name="filename" class="form-control">
 					</div>
 					<div class="row" style=" margin-top: 30px;">
 						<div class="col-sm-6 form-group">

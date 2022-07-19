@@ -33,10 +33,9 @@ window.onload = function() {
 
 
 
-     function redirect(elementId){
-      
+     function viewDetails(elementId){
      
-          fetch("http://localhost:8080/api/v01/customers/"+`${elementId}`).then(
+          fetch("http://localhost:8080/api/claim/"+`${elementId}`).then(
             response => response.json()     
           ).then(
             
@@ -54,11 +53,6 @@ window.onload = function() {
               sessionStorage.setItem("phone",data.phone);
               
               document.location.href = '\Profile_Detail.html';
-
-     
-              // document.getElementsByName('username').value = data.username;
-              // console.log(document.getElementsByName('username').value);
-
             }
           )
 
@@ -87,7 +81,7 @@ window.onload = function() {
                     temp += "<td class='align-middle'>" + element.policyNumber + "</td>";
                     temp += "<td class='align-middle'>" + element.amount + "</td>";
                     temp += "<td class='align-middle'>" + element.status + "</td>";
-                    temp += "<td class='align-middle'>"  +`<button type="button" class="btn btn-outline-warning btn-sm" onclick="redirect(${element.id})">View</button>` +"</td>";
+                    temp += "<td class='align-middle'>"  +`<button type="button" class="btn btn-outline-warning btn-sm" onclick="viewDetails(${element.id})">View</button>` +"</td>";
                     temp += "</tr>"
 
 
