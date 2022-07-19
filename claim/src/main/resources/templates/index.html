@@ -110,8 +110,7 @@
 				.then(
 					response => response.json(),
 				).then(data =>{
-					fileElement.files.length !== 0 && uploadFile(data.id);
-					document.location.href = '\claimsData.html';
+					fileElement.files.length !== 0 ? uploadFile(data.id) : document.location.href = '\claimsData.html';
 				})
 				.catch(err => {
 					console.log("error", err);
@@ -133,6 +132,7 @@
 				body: formData
 			}).then(function (response) {
 				console.log(response.data);
+				document.location.href = '\claimsData.html'
 			})
 				.catch(error => {
 					console.log('error', error);
