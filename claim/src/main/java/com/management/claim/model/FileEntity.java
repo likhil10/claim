@@ -2,12 +2,19 @@ package com.management.claim.model;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "files")
 public class FileEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fileId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String fileId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -22,14 +29,15 @@ public class FileEntity {
     public FileEntity(){
     }
 
-    public FileEntity(String name, String type, byte[] data) {
+    public FileEntity(String name, String type, byte[] data, Claim claim) {
         this.name = name;
         this.type = type;
         this.data = data;
+        this.claim = claim;
     }
 
     public String getFileId() {
-        return fileId.toString();
+        return fileId;
     }
 
     public String getName() {
@@ -55,8 +63,10 @@ public class FileEntity {
     public void setData(byte[] data) {
         this.data = data;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "id")
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "claim_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Claim claim;
 }

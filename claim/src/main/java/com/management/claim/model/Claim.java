@@ -105,6 +105,6 @@ public class Claim {
 		return id;
 	}
 
-	@OneToMany(mappedBy = "claim")
+	@OneToMany(mappedBy="claim")
 	private List<FileEntity> fileEntityList;
 }

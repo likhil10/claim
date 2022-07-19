@@ -2,7 +2,9 @@ package com.management.claim.service;
 
 import com.management.claim.exception.FileStorageException;
 import com.management.claim.exception.MyFileNotFoundException;
+import com.management.claim.model.Claim;
 import com.management.claim.model.FileEntity;
+import com.management.claim.repository.ClaimManagementRepository;
 import com.management.claim.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,12 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private FileRepository fileRepository;
+    
+    @Autowired
+    private ClaimManagementRepository claimManagementRepository;
 
     @Override
-    public FileEntity storeFile(MultipartFile file) {
+    public FileEntity storeFile(MultipartFile file, Long id) {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
@@ -28,8 +33,10 @@ public class FileServiceImpl implements FileService {
             if(fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
+            
+            Claim claim = claimManagementRepository.findById(id).orElse(null);
 
-            FileEntity fileEntity = new FileEntity(fileName, file.getContentType(), file.getBytes());
+            FileEntity fileEntity = new FileEntity(fileName, file.getContentType(), file.getBytes(), claim);
 
             return fileRepository.save(fileEntity);
         } catch (IOException ex) {
