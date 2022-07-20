@@ -1,19 +1,12 @@
 package com.management.claim.comtroller;
 
-import com.management.claim.model.Claim;
 import com.management.claim.model.FileEntity;
 import com.management.claim.payload.UploadFileResponse;
-import com.management.claim.repository.ClaimManagementRepository;
 import com.management.claim.service.FileService;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -51,17 +44,20 @@ public class FileController {
                 .toUriString();
 
         return new UploadFileResponse(fileEntity.getName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
+                file.getContentType());
     }
 
-    @GetMapping("/downloadFile/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+    @GetMapping("/getFile/{claimId}")
+    public UploadFileResponse downloadFile(@PathVariable Long claimId) {
         // Load file from database
-        FileEntity fileEntity = fileService.getFile(fileId);
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(fileEntity.getType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getName() + "\"")
-                .body(new ByteArrayResource(fileEntity.getData()));
+    	List<FileEntity> fileEntity = fileService.getFile(claimId);
+        
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileEntity.get(0).getFileId())
+                .toUriString();
+    	
+        return new UploadFileResponse(fileEntity.get(0).getName(), fileDownloadUri,
+        		fileEntity.get(0).getType());
     }
 }

@@ -7,6 +7,7 @@ import com.management.claim.model.Claim;
 import com.management.claim.repository.ClaimManagementRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -29,5 +30,10 @@ public class ClaimManagementServiceImpl implements ClaimManagementService{
 	@Override
 	public List<Claim> getAllClaims() {
 		return claimRepository.findAll();
+	}
+
+	@Override
+	public Optional<Claim> getClaim(Long id) {
+		return claimRepository.findById(id);
 	}
 }

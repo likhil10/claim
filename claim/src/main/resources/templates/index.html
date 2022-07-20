@@ -35,6 +35,10 @@
 		}
 	</style>
 	<script>
+	
+	function goBack() {
+			document.location.href = '\claimsData.html'
+		}
 
 		function validateForm() {
 			var firstName = document.forms.RegForm.firstName.value;
@@ -195,11 +199,11 @@
 					</div>
 					<div class="row" style=" margin-top: 30px;">
 						<div class="col-sm-6 form-group">
-							<button type="button" class="btn btn-lg btn-info" onclick="validateForm()">Submit</button>
+							<button type="button"
+								class="btn btn-lg btn-info" onClick="goBack()">Back</button>
 						</div>
 						<div class="col-sm-6 form-group">
-							<button type="button" style="background-color:orange;border-color:orange"
-								class="btn btn-lg btn-info">Reset</button>
+							<button type="button" class="btn btn-lg btn-info" onclick="validateForm()">Submit</button>
 						</div>
 					</div>
 				</form>

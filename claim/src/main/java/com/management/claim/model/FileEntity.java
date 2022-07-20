@@ -65,7 +65,7 @@ public class FileEntity {
     }
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "claim_id", nullable = false)
+    @JoinColumn(name = "claimId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Claim claim;
