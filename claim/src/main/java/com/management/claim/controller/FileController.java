@@ -1,4 +1,4 @@
-package com.management.claim.comtroller;
+package com.management.claim.controller;
 
 import com.management.claim.model.FileEntity;
 import com.management.claim.payload.UploadFileResponse;

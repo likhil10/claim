@@ -74,7 +74,7 @@
 				document.forms.RegForm.policyNumber.focus();
 				document.getElementById("policyNumber").innerHTML = "Please Fill out this field";
 				document.getElementById("email").style.visibility = "hidden";
-			} else if (amount == null || amount == "") {
+			} else if (amount == null || amount == "" || amount<0) {
 				document.getElementById("amount").style.visibility = "visible";
 				document.forms.RegForm.amount.focus();
 				document.getElementById("amount").innerHTML = "Please Fill out this field";
@@ -85,13 +85,13 @@
 		}
 		function fileClaim() {
 
-			const url = 'http://localhost:8080/api/claim'
+			const url = 'http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/claim'
 			let firstName = document.forms.RegForm.firstName.value;
 			let lastName = document.forms.RegForm.lastName.value;
 			let email = document.forms.RegForm.email.value;
-			let phoneNumber = document.forms.RegForm.phone.value;
+			let phoneNumber = parseInt(document.forms.RegForm.phone.value);
 			let policyNumber = document.forms.RegForm.policyNumber.value;
-			let amount = document.forms.RegForm.amount.value;
+			let amount = parseFloat(document.forms.RegForm.amount.value);
 			let fileElement = document.getElementById('fileInput')
 			let status = fileElement.files.length !== 0 ? "Submitted" : "In Progress";
 
@@ -114,6 +114,7 @@
 				.then(
 					response => response.json(),
 				).then(data =>{
+					window.alert('Claim successfully filed !');
 					fileElement.files.length !== 0 ? uploadFile(data.id) : document.location.href = '\claimsData.html';
 				})
 				.catch(err => {
@@ -129,7 +130,7 @@
 			let formData = new FormData();
 			formData.append('file', file);
 
-			const url = `http://localhost:8080/api/uploadFile/${id}`;
+			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/uploadFile/${id}`;
 
 			fetch(url, {
 				method: 'POST',

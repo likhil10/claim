@@ -1,4 +1,4 @@
-package com.management.claim.comtroller;
+package com.management.claim.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

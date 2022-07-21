@@ -10,23 +10,19 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script>
 
-		function reDirectToDependent() {
-			document.location.href = '\Add_Dependent.html'
-		}
-
 		function goBack() {
 			sessionStorage.clear();
 			document.location.href = '\claimsData.html'
 		}
 
 		function updateData() {
-			const url = `http://localhost:8080/api/updateClaim/${sessionStorage.getItem('id')}`
+			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/updateClaim/${sessionStorage.getItem('id')}`
 			let firstName = document.getElementById("first_name").value;
 			let lastName = document.getElementById('last_name').value;
 			let email = document.getElementById('email').value;
-			let phoneNumber = document.getElementById('phoneNumber').value;
+			let phoneNumber = parseInt(document.getElementById('phoneNumber').value);
 			let policyNumber = document.getElementById('policyNumber').value;
-			let amount = document.getElementById('amount').value;
+			let amount = parseFloat(document.getElementById('amount').value);
 			let fileElement = document.getElementById('fileInput')
 			let status = fileElement.files.length !== 0 ? "Submitted" : "In Progress";
 			const data = {
@@ -48,6 +44,7 @@
 				.then(
 					response => response.json(),
 				).then(data => {
+					window.alert('Claim successfully updated !');
 					sessionStorage.setItem("amount", data.amount);
 					sessionStorage.setItem("email", data.email);
 					sessionStorage.setItem("firstName", data.firstName);
@@ -71,7 +68,7 @@
 			let formData = new FormData();
 			formData.append('file', file);
 
-			const url = `http://localhost:8080/api/uploadFile/${id}`;
+			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/uploadFile/${id}`;
 
 			fetch(url, {
 				method: 'POST',

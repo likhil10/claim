@@ -59,7 +59,7 @@
 
 		function viewDetails(elementId) {
 
-			fetch("http://localhost:8080/api/claim/" + `${elementId}`).then(
+			fetch("http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/claim/" + `${elementId}`).then(
 				response => response.json()
 			).then(
 				data => {
@@ -78,7 +78,7 @@
 		}
 
 		function getfileDetails(elementId) {
-			fetch("http://localhost:8080/api/getFile/" + `${elementId}`).then(
+			fetch("http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/getFile/" + `${elementId}`).then(
 				response => response.json()
 			).then(
 				data => {
@@ -91,7 +91,7 @@
 
 
 		function getData(id) {
-			const url = id ? "http://localhost:8080/api/claim/" + `${id}` : "http://localhost:8080/api/claim";
+			const url = id ? "http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/claim/" + `${id}` : "http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/claim";
 			fetch(url)
 				.then(res => res.json())
 				.then(out =>

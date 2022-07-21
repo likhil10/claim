@@ -1,8 +1,8 @@
 package com.management.claim.service;
 
-import com.management.claim.comtroller.ClaimManagementController;
 import org.springframework.stereotype.Service;
 
+import com.management.claim.controller.ClaimManagementController;
 import com.management.claim.model.Claim;
 import com.management.claim.repository.ClaimManagementRepository;
 
