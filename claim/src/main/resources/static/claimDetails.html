@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Customer Application</title>
+	<title>Claim Details</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
@@ -16,7 +16,7 @@
 		}
 
 		function updateData() {
-			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/updateClaim/${sessionStorage.getItem('id')}`
+			const url = `http://localhost:8080/api/updateClaim/${sessionStorage.getItem('id')}`
 			let firstName = document.getElementById("first_name").value;
 			let lastName = document.getElementById('last_name').value;
 			let email = document.getElementById('email').value;
@@ -68,7 +68,7 @@
 			let formData = new FormData();
 			formData.append('file', file);
 
-			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/uploadFile/${id}`;
+			const url = `http://localhost:8080/api/uploadFile/${id}`;
 
 			fetch(url, {
 				method: 'POST',

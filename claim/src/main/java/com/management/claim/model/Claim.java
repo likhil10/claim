@@ -10,7 +10,10 @@ public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+	@Column(name = "username", nullable = false)
+    private String username;
+
 	@Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -35,7 +38,7 @@ public class Claim {
     public Claim() {
 	}
     
-	public Claim(String firstName, String lastName, Double amount, String email, int phoneNumber, String policyNumber, String status) {
+	public Claim(String firstName, String lastName, Double amount, String email, int phoneNumber, String policyNumber, String status, String username) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.amount = amount;
@@ -43,10 +46,19 @@ public class Claim {
 		this.phoneNumber = phoneNumber;
 		this.policyNumber = policyNumber;
 		this.status = status;
+		this.username = username;
 	}
 	
 	public String getFirstName() {
 		return firstName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setFirstName(String firstName) {

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Customer Application</title>
+	<title>New Claim</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
@@ -85,11 +85,11 @@
 		}
 		function fileClaim() {
 
-			const url = 'http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/claim'
+			const url = 'http://localhost:8080/api/claim'
 			let firstName = document.forms.RegForm.firstName.value;
 			let lastName = document.forms.RegForm.lastName.value;
 			let email = document.forms.RegForm.email.value;
-			let phoneNumber = parseInt(document.forms.RegForm.phone.value);
+			let phoneNumber = document.forms.RegForm.phone.valueAsNumber;
 			let policyNumber = document.forms.RegForm.policyNumber.value;
 			let amount = parseFloat(document.forms.RegForm.amount.value);
 			let fileElement = document.getElementById('fileInput')
@@ -130,7 +130,7 @@
 			let formData = new FormData();
 			formData.append('file', file);
 
-			const url = `http://10.3.187.111:7001/claim-0.0.1-SNAPSHOT/api/uploadFile/${id}`;
+			const url = `http://localhost:8080/api/uploadFile/${id}`;
 
 			fetch(url, {
 				method: 'POST',

@@ -6,6 +6,9 @@ import com.management.claim.service.FileService;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,23 +24,16 @@ public class FileController {
 
     @Autowired
     private FileService fileService;
-    
-    
-//    @PostMapping("/uploadFile/{id}")
-//    public ResponseEntity<Resource> createComment(@PathVariable(value = "id") Long id,
-//        @RequestBody FileEntity fileEntity) {
-//      Comment comment = tutorialRepository.findById(tutorialId).map(tutorial -> {
-//        commentRequest.setTutorial(tutorial);
-//        return commentRepository.save(commentRequest);
-//      }).orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + tutorialId));
-//      return new ResponseEntity<>(comment, HttpStatus.CREATED);
-//    }
-    
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+
     @PostMapping("/uploadFile/{id}")
     public UploadFileResponse uploadFile(@PathVariable(value = "id") Long id, @RequestParam("file") MultipartFile file) {
-    	
+
+        logger.info("Trying to save file...");
+
         FileEntity fileEntity = fileService.storeFile(file, id);
-        
+
+
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileEntity.getFileId())
@@ -49,9 +45,12 @@ public class FileController {
 
     @GetMapping("/getFile/{claimId}")
     public UploadFileResponse downloadFile(@PathVariable Long claimId) {
+
+        logger.info("Trying to get file...");
+
         // Load file from database
     	List<FileEntity> fileEntity = fileService.getFile(claimId);
-        
+
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileEntity.get(0).getFileId())
