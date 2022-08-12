@@ -1,20 +1,22 @@
 package com.management.claim.service;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Service;
 
 import com.management.claim.controller.ClaimManagementController;
 import com.management.claim.model.Claim;
 import com.management.claim.repository.ClaimManagementRepository;
+import org.apache.logging.log4j.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class ClaimManagementServiceImpl implements ClaimManagementService{
-	private ClaimManagementRepository claimRepository;
+	private final ClaimManagementRepository claimRepository;
 
-	Logger logger = Logger.getLogger(ClaimManagementController.class.getName());
+	Logger logger = LogManager.getLogger(ClaimManagementController.class.getName());
+
 
 	public ClaimManagementServiceImpl(ClaimManagementRepository claimRepository) {
 		this.claimRepository = claimRepository;
@@ -22,6 +24,7 @@ public class ClaimManagementServiceImpl implements ClaimManagementService{
 
 	@Override
 	public Claim saveClaim(Claim claim) {
+		logger.debug("saveClaim(Service Impl) - Entry");
 		claimRepository.save(claim);
 		logger.info("Claim Saved.");
 		return claim;
@@ -29,11 +32,13 @@ public class ClaimManagementServiceImpl implements ClaimManagementService{
 
 	@Override
 	public List<Claim> getAllClaims() {
+		logger.debug("updateClaim(Service Impl) - Entry");
 		return claimRepository.findAll();
 	}
 
 	@Override
 	public Optional<Claim> getClaim(Long id) {
+		logger.debug("getClaim(Service Impl) - Entry");
 		return claimRepository.findById(id);
 	}
 }

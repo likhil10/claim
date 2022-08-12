@@ -34,23 +34,31 @@
   <script>
 
     function validateForm() {
-      var userName = document.forms.RegForm.userName.value;
-      var password = document.forms.RegForm.password.value;
+      const userName = document.forms.RegForm.userName.value;
+      const password = document.forms.RegForm.password.value;
       if (userName == null || userName === "") {
-        document.getElementById("firstName").style.visibility = "visible";
+        document.getElementById("user").style.visibility = "visible";
         document.forms.RegForm.userName.focus();
-        document.getElementById("firstName").innerHTML = "Please enter valid data in this field";
+        document.getElementById("user").innerHTML = "Please enter valid data in this field";
       } else if (password == null || password === "") {
-        document.getElementById("phone").style.visibility = "visible";
+        document.getElementById("pass").style.visibility = "visible";
         document.forms.RegForm.password.focus();
-        document.getElementById("phone").innerHTML = "Please enter valid data in this field";
-        document.getElementById("firstName").style.visibility = "hidden";
+        document.getElementById("pass").innerHTML = "Please enter valid data in this field";
+        document.getElementById("user").style.visibility = "hidden";
       } else {
         logIn();
       }
     }
     function logIn() {
+      const userName = document.forms.RegForm.userName.value;
+      const password = document.forms.RegForm.password.value;
 
+      if (userName === 'root' && password === 'pass') {
+        sessionStorage.setItem('username', userName);
+        window.location.href = '\index.html';
+      } else {
+        window.location.href = '\error.html';
+      }
     }
 
   </script>
@@ -69,7 +77,7 @@
           <div class="col-sm-6 form-group">
             <input type="text" id="userName" name="userName" placeholder="Enter Username Here.."
                    class="form-control" required />
-            <p id="firstName" class="errorMessage"> </p>
+            <p id="user" class="errorMessage"> </p>
           </div>
         </div>
         <div class="row">
@@ -79,7 +87,7 @@
           <div class="col-sm-6 form-group">
             <input type="password" id="password" name="password" placeholder="Enter Password Here.."
                    class="form-control" required />
-            <p id="phone" class="errorMessage"> </p>
+            <p id="pass" class="errorMessage"> </p>
           </div>
         </div>
         <div class="row" style=" margin-top: 30px;">

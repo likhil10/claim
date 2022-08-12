@@ -52,6 +52,7 @@
 
 		window.onload = function () {
 			getData();
+			document.getElementById("username").setAttribute('value', sessionStorage.getItem('username'));
 			addEventToHeaders();
 		};
 
@@ -72,6 +73,7 @@
 					sessionStorage.setItem("phoneNumber", data.phoneNumber);
 					sessionStorage.setItem("policyNumber", data.policyNumber);
 					sessionStorage.setItem("status", data.status);
+					sessionStorage.setItem('username', data.username);
 					data.status === 'Submitted' ? getfileDetails(elementId) : document.location.href = '\claimDetails.html';
 				}
 			)
@@ -83,8 +85,9 @@
 			).then(
 				data => {
 					console.log('data', data);
-					sessionStorage.setItem("fileDownloadUri", data.fileDownloadUri);
-					sessionStorage.setItem("fileName", data.fileName);
+					sessionStorage.setItem('fileData', JSON.stringify(data));
+					// sessionStorage.setItem("fileDownloadUri", data.fileDownloadUri);
+					// sessionStorage.setItem("fileName", data.fileName);
 					document.location.href = '\claimDetails.html';
 				})
 		}
@@ -206,8 +209,11 @@
 <body>
 	<section class="p-4 mb-4 d-flex align-items-center flex-column">
 
-	<h2>Claims Table</h2>
-	</section>	
+		<div class="well" style="margin-top: 10px; padding-top: 10px;">
+			<h1>Claims Table</h1>
+			<h6>Username: <input type="text" id="username" style="border: 0px;" disabled /></h6>
+		</div>
+	</section>
 	<section class="p-4 mb-4 d-flex align-items-center flex-column">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">

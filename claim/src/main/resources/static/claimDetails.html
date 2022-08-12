@@ -11,20 +11,29 @@
 	<script>
 
 		function goBack() {
-			sessionStorage.clear();
+			sessionStorage.setItem("amount", '');
+			sessionStorage.setItem("email", '');
+			sessionStorage.setItem("firstName", '');
+			sessionStorage.setItem("lastName", '');
+			sessionStorage.setItem("id", '');
+			sessionStorage.setItem("phoneNumber", '');
+			sessionStorage.setItem("policyNumber", '');
+			sessionStorage.setItem("status", '');
+			sessionStorage.setItem("fileData", '');
 			document.location.href = '\claimsData.html'
 		}
 
 		function updateData() {
 			const url = `http://localhost:8080/api/updateClaim/${sessionStorage.getItem('id')}`
-			let firstName = document.getElementById("first_name").value;
-			let lastName = document.getElementById('last_name').value;
-			let email = document.getElementById('email').value;
-			let phoneNumber = parseInt(document.getElementById('phoneNumber').value);
-			let policyNumber = document.getElementById('policyNumber').value;
-			let amount = parseFloat(document.getElementById('amount').value);
-			let fileElement = document.getElementById('fileInput')
-			let status = fileElement.files.length !== 0 ? "Submitted" : "In Progress";
+			const firstName = document.getElementById("first_name").value;
+			const lastName = document.getElementById('last_name').value;
+			const email = document.getElementById('email').value;
+			const phoneNumber = parseInt(document.getElementById('phoneNumber').value);
+			const policyNumber = document.getElementById('policyNumber').value;
+			const amount = parseFloat(document.getElementById('amount').value);
+			const fileElement = document.getElementById('fileInput')
+			const status = fileElement.files.length !== 0 ? "Submitted" : "In Progress";
+			const username =sessionStorage.getItem('username');
 			const data = {
 				firstName,
 				lastName,
@@ -33,6 +42,7 @@
 				policyNumber,
 				amount,
 				status,
+				username
 			};
 
 			fetch(url, {
@@ -57,6 +67,7 @@
 				})
 				.catch(err => {
 					console.log("error", err);
+					window.location.href="\error.html";
 				});
 		}
 
@@ -76,8 +87,7 @@
 			}).then(response => response.json())
 				.then(data => {
 					console.log(data);
-					sessionStorage.setItem("fileDownloadUri", data.fileDownloadUri);
-					sessionStorage.setItem("fileName", data.fileName);
+					sessionStorage.setItem("fileData", JSON.stringify(data));
 					location.reload();
 
 				})
@@ -95,7 +105,16 @@
 			document.getElementById("policyNumber").setAttribute('value', sessionStorage.getItem('policyNumber'));
 			document.getElementById("phoneNumber").setAttribute('value', sessionStorage.getItem('phoneNumber'));
 			document.getElementById("status").setAttribute('value', sessionStorage.getItem('status'));
-			document.getElementById("fileName").setAttribute('value', sessionStorage.getItem('status') !== 'In Progress' && sessionStorage.getItem('fileName') ? sessionStorage.getItem('fileName') : 'Not uploaded');
+			const fileData = sessionStorage.getItem('fileData') || '';
+			const parsedData = fileData !== '' && JSON.parse(fileData);
+			let temp = 'File: ';
+			fileData !== '' && parsedData.map((data, index) => {
+				temp +=  data.fileName + (index !== parsedData.length-1 ? " , " : '')
+			});
+			console.log('fileData');
+			file.innerHTML = fileData !== '' ? temp : 'File Not uploaded';
+			// document.getElementById("fileName").setAttribute('value', sessionStorage.getItem('status') !== 'In Progress' && sessionStorage.getItem('fileData') ? sessionStorage.getItem('fileName') : 'Not uploaded');
+			document.getElementById("username").setAttribute('value', sessionStorage.getItem('username'));
 		}
 
 
@@ -107,7 +126,8 @@
 		<div class="well" style="margin-top: 10px; padding-top: 10px;">
 			<h1>Claim details</h1>
 			<h6>Status: <input type="text" id="status" style="border: 0px;" disabled /></h6>
-			<h6>File: <input type="text" id="fileName" style="border: 0px;" disabled /></h6>
+			<h6 id="file">File:  </h6>
+			<h6>Username: <input type="text" id="username" style="border: 0px;" disabled /></h6>
 		</div>
 		<div class="col-lg-12 well">
 			<div class="row">
